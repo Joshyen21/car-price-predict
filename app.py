@@ -24,5 +24,7 @@ st.write("Enter the vehicle specifications below to instantly calculate its esti
 st.markdown("### Vehicle Details")
 col1, col2 = st.columns(2)
 
-wit…
+with st.sidebar:
+    st.write("Select Options")
     predict_car()
+
