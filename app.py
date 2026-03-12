@@ -1,30 +1,42 @@
 import streamlit as st
 import pandas as pd
-import joblib
+# import joblib  # Uncomment this when you are ready to load your model
 
-# Set the page configuration
-st.set_page_config(page_title="Kenya Car Price Predictor", page_icon="🚗", layout="centered")
+# --- STEP 1: DEFINE THE FUNCTION AT THE TOP ---
+# This ensures Python knows what 'predict_car' is before you call it.
+def predict_car():
+    st.markdown("### 🚗 Prediction Results")
+    
+    # Placeholder for your model logic
+    # In a real scenario, you would do something like:
+    # model = joblib.load('car_model.pkl')
+    # prediction = model.predict(input_data)
+    
+    st.info("The model logic will execute here once your dataset and model are linked.")
+    st.write("Current Status: System Ready.")
 
-# 1. Load the AI Brain (Cached so it only loads once)
-@st.cache_resource
-def load_model():
-    try:
-        return joblib.load('kenya_car_price_model.pkl')
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        return None
+# --- STEP 2: APP UI SETUP ---
+st.set_page_config(page_title="Car Price Predictor", layout="wide")
 
-model = load_model()
+st.title("Car Price Prediction Dashboard")
+st.write("Welcome to the car price prediction tool. Adjust the parameters in the sidebar to begin.")
 
-# 2. Frontend Title and Description
-st.title("🚗 Kenya Used Car Price Predictor")
-st.write("Enter the vehicle specifications below to instantly calculate its estimated market value in KES.")
-
-# 3. Create the Input Form using Columns for a clean UI
-st.markdown("### Vehicle Details")
-col1, col2 = st.columns(2)
-
+# --- STEP 3: SIDEBAR & FUNCTION CALL ---
 with st.sidebar:
-    st.write("Select Options")
+    st.header("Control Panel")
+    st.write("Select the car specifications below:")
+    
+    # Example input widgets
+    year = st.slider("Select Car Year", 2010, 2024, 2018)
+    mileage = st.number_input("Enter Mileage", value=50000)
+    
+    st.divider()
+    
+    # CALL THE FUNCTION
+    # This now works because the function was defined on Line 7
     predict_car()
 
+# --- STEP 4: MAIN BODY CONTENT ---
+st.subheader("Market Overview")
+# You can add charts or dataframes here
+st.write(f"Analyzing data for a {year} model with {mileage:,} miles...")
