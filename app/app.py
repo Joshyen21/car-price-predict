@@ -1,30 +1,27 @@
-import joblib
+import streamlit as st
 import pandas as pd
+import joblib
 
-def predict_car():
-    print("--- Car Price Estimator ---")
+# Set the page configuration
+st.set_page_config(page_title="Kenya Car Price Predictor", page_icon="🚗", layout="centered")
+
+# 1. Load the AI Brain (Cached so it only loads once)
+@st.cache_resource
+def load_model():
     try:
-        model = joblib.load('kenya_car_price_model.pkl')
+        return joblib.load('kenya_car_price_model.pkl')
     except Exception as e:
-        print("Error loading model. Did you run train_model.py first?")
-        return
+        st.error(f"Error loading model: {e}")
+        return None
 
-    # A sample car to test if it works
-    sample_data = {
-        'Model': ['Toyota Prado'],
-        'Year': [2017],
-        'Mileage_km': [85000],
-        'Fuel_Type': ['Diesel'],
-        'Transmission': ['Automatic'],
-        'Usage_Type': ['Locally Used'],
-        'Engine_Size_cc': [2700]
-    }
-    
-    df = pd.DataFrame(sample_data)
-    prediction = model.predict(df)[0]
-    
-    print(f"\n Vehicle: 2017 Toyota Prado (85k km)")
-    print(f" Estimated Value: KES {prediction:,.2f}\n")
+model = load_model()
 
-if __name__ == "__main__":
-    predict_car()
+# 2. Frontend Title and Description
+st.title("🚗 Kenya Used Car Price Predictor")
+st.write("Enter the vehicle specifications below to instantly calculate its estimated market value in KES.")
+
+# 3. Create the Input Form using Columns for a clean UI
+st.markdown("### Vehicle Details")
+col1, col2 = st.columns(2)
+
+wit…
